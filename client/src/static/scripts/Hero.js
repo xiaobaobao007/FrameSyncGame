@@ -20,8 +20,11 @@ function Hero() {
     };
 
     this.update = function (now) {
+        let closeBall = findCloseOne();
+        this.gun.reset(this.x, this.y, closeBall.x, closeBall.y);
         this.gun.update(now);
     };
+
 }
 
 function heroInit() {

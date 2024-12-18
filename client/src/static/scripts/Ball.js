@@ -1,16 +1,12 @@
 function Ball() {
-    this.radius = 11; // 小球半径
-    this.x = 0;
-    this.y = -this.radius;
-    this.color = ``;
-    this.speed = 0;
-    this.hp = 5;
 
     this.init = function () {
+        this.radius = 11;
         this.x = this.radius + random.random(CANVAS_WIDTH - this.radius * 2)
         this.y = -this.radius * 2;
         this.color = `rgb(${random.random(256)},${random.random(256)},${random.random(256)})`;
-        this.speed = random.random(15) * 0.1 + 0.1; // 随机下落速度
+        this.speed = random.random(15) * 0.1 + 0.1;
+        this.hp = 2;
     };
 
     this.draw = function () {
@@ -19,7 +15,8 @@ function Ball() {
         ctx.fillStyle = this.color;
         ctx.fill();
 
-        ctx.fillStyle = "black";
+        ctx.fillStyle = "white";
+        ctx.lineWidth = 3;
         ctx.fillText(this.hp, this.x, this.y);
     };
 
@@ -51,4 +48,14 @@ function updateBall() {
     for (let ball of balls) {
         ball.update();
     }
+}
+
+function findCloseOne() {
+    let b = null;
+    for (let ball of balls) {
+        if (b == null || b.y < ball.y) {
+            b = ball;
+        }
+    }
+    return b;
 }

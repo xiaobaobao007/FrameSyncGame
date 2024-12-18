@@ -21,6 +21,7 @@ function start() {
         serverStartTime = Date.parse(time);
     }
 
+    initBullet()
     ballInit();
     heroInit();
 
@@ -99,7 +100,7 @@ function calculate(now) {
     for (let i = 0; i < times; i++) {
         serverStartTime += calculateFrameMs;
         updateBall();
+        updateHero(serverStartTime);
     }
 
-    updateHero(now);
 }
