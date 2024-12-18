@@ -1,6 +1,3 @@
-// 获取canvas元素和绘图上下文
-
-// 小球对象构造函数
 function Ball() {
     this.radius = 11; // 小球半径
     this.x = 0;
