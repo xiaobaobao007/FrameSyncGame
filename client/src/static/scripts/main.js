@@ -2,7 +2,7 @@
 
 // 小球对象构造函数
 function Ball() {
-    this.radius = 20; // 小球半径
+    this.radius = 11; // 小球半径
     this.x = 0;
     this.y = -this.radius;
     this.color = ``;

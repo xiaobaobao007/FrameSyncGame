@@ -7,7 +7,7 @@
 </head>
 
 <body>
-<canvas id="myCanvas" width="500" height="500"></canvas>
+<canvas id="myCanvas" width="700" height="600"></canvas>
 
 <div>
     <a>初始种子:</a>
@@ -22,7 +22,7 @@
 
     <a>FPS:</a>
     </br>
-    <input id="fps"/>
+    <input id="fps" value="60"/>
     </br>
     </br>
 
@@ -48,8 +48,11 @@
 
     random = new Random();
 
+    paintFrameMs = 1000 / 60;
+    lastPaintTime = 0;
+
     serverStartTime = 0;
-    frameMs = 20;
+    calculateFrameMs = 20;
 
     PAUSE = true;
 
@@ -72,6 +75,8 @@
             balls.push(ball);
         }
 
+        resetFps();
+
         PAUSE = false;
     }
 
@@ -80,7 +85,12 @@
     }
 
     function continue_() {
+        resetFps();
         PAUSE = false;
+    }
+
+    function resetFps() {
+        paintFrameMs = 1000 / parseInt(document.getElementById("fps").value);
     }
 
     function getTimeStr(timestamp) {
@@ -94,10 +104,29 @@
         return Y + M + D + h + m + s;
     }
 
-    setInterval(repaint, 500);
-    setInterval(calculate, 10);
+    setInterval(timeThread, 10);
 
-    function repaint() {
+    function timeThread() {
+        if (PAUSE) {
+            return;
+        }
+
+        let now = Date.now();
+
+        //渲染层
+        repaint(now);
+
+        //逻辑层
+        calculate(now);
+    }
+
+    function repaint(now) {
+        if (now < lastPaintTime) {
+            return;
+        }
+
+        lastPaintTime = now + paintFrameMs;
+
         ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
         for (let ball of balls) {
@@ -105,17 +134,12 @@
         }
     }
 
-    function calculate() {
-        let now = Date.now();
-        if (PAUSE) {
-            return;
-        }
-
+    function calculate(now) {
         if (now < serverStartTime) {
             return;
         }
 
-        let times = Math.floor((now - serverStartTime) / frameMs);
+        let times = Math.floor((now - serverStartTime) / calculateFrameMs);
 
         if (times <= 0) {
             return;
@@ -126,7 +150,7 @@
         }
 
         for (let i = 0; i < times; i++) {
-            serverStartTime += frameMs;
+            serverStartTime += calculateFrameMs;
 
             for (let ball of balls) {
                 ball.update();
