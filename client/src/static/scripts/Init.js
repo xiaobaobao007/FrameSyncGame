@@ -1,3 +1,14 @@
+function init() {
+    canvas = document.getElementById('myCanvas');
+    ctx = canvas.getContext('2d');
+
+    CANVAS_WIDTH = Math.floor(canvas.width);
+    CANVAS_HEIGHT = Math.floor(canvas.height);
+
+    HERO_HEIGHT = Math.floor(CANVAS_HEIGHT / 10);
+    BALL_HEIGHT = CANVAS_HEIGHT - HERO_HEIGHT;
+}
+
 function start() {
     random.init(parseInt(document.getElementById("initRandomSeed").value));
 
@@ -10,12 +21,8 @@ function start() {
         serverStartTime = Date.parse(time);
     }
 
-    balls = [];
-    for (let i = 0; i < 10; i++) {
-        const ball = new Ball();
-        ball.init();
-        balls.push(ball);
-    }
+    ballInit();
+    heroInit();
 
     resetFps();
 
@@ -69,9 +76,9 @@ function repaint(now) {
 
     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
-    for (let ball of balls) {
-        ball.draw();
-    }
+    paintBall();
+
+    paintHero();
 }
 
 function calculate(now) {
@@ -91,12 +98,8 @@ function calculate(now) {
 
     for (let i = 0; i < times; i++) {
         serverStartTime += calculateFrameMs;
-
-        for (let ball of balls) {
-            ball.update();
-            if (ball.y - ball.radius * 2 > CANVAS_HEIGHT) {
-                ball.init();
-            }
-        }
+        updateBall();
     }
+
+    updateHero(now);
 }

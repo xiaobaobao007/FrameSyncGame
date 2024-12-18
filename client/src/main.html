@@ -33,21 +33,14 @@
 
 <script src="static/scripts/randomUtil.js"></script>
 <script src="static/scripts/Ball.js"></script>
+<script src="static/scripts/Bullet.js"></script>
+<script src="static/scripts/Gun.js"></script>
+<script src="static/scripts/Hero.js"></script>
 <script src="static/scripts/Init.js"></script>
 <link rel="stylesheet" href="static/css/main.css"/>
 </body>
 
 <script>
-    canvas = document.getElementById('myCanvas');
-    ctx = canvas.getContext('2d');
-
-    CANVAS_WIDTH = Math.floor(canvas.width);
-    CANVAS_HEIGHT = Math.floor(canvas.height);
-
-    balls = [];
-
-    random = new Random();
-
     paintFrameMs = 1000 / 60;
     lastPaintTime = 0;
 
@@ -56,7 +49,11 @@
 
     PAUSE = true;
 
+    init();
+
     setInterval(timeThread, 10);
+
+    start();
 </script>
 
 </html>

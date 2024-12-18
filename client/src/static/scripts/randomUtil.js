@@ -1,9 +1,10 @@
+random = new Random();
+
 function Random() {
     this._init_random = 0;
     this._random_array = [];
     this.index = 0;
     this.zeroNum = 0;
-
 
     this.init = function (initRandom) {
         this.privetInit(4158185818 + initRandom);
