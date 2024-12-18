@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Canvas Falling Balls</title>
+</head>
+
+<body>
+<canvas id="myCanvas" width="500" height="500"></canvas>
+
+<div>
+    <a>初始种子:</a>
+    </br>
+    <input id="initRandomSeed" value="1000"/>
+    </br>
+
+    <a>启动时间（2024-12-12 16:25:00）:</a>
+    </br>
+    <input id="startTime"/>
+    </br>
+
+    <a>FPS:</a>
+    </br>
+    <input id="fps"/>
+    </br>
+    </br>
+
+    <button onclick="start()">开始</button>
+    <button onclick="pause()">暂停</button>
+    <button onclick="continue_()">继续</button>
+</div>
+
+
+<script src="static/scripts/main.js"></script>
+<script src="static/scripts/randomUtil.js"></script>
+<link rel="stylesheet" href="static/css/main.css"/>
+</body>
+
+<script>
+    canvas = document.getElementById('myCanvas');
+    ctx = canvas.getContext('2d');
+
+    CANVAS_WIDTH = Math.floor(canvas.width);
+    CANVAS_HEIGHT = Math.floor(canvas.height);
+
+    balls = [];
+
+    random = new Random();
+
+    serverStartTime = 0;
+    frameMs = 20;
+
+    PAUSE = true;
+
+    function start() {
+        random.init(parseInt(document.getElementById("initRandomSeed").value));
+
+        let time = document.getElementById("startTime").value;
+        if (!time || time.length < 2) {
+            serverStartTime = Date.now();
+            serverStartTime = serverStartTime - serverStartTime % 1000;
+            document.getElementById("startTime").value = getTimeStr(serverStartTime);
+        } else {
+            serverStartTime = Date.parse(time);
+        }
+
+        balls = [];
+        for (let i = 0; i < 10; i++) {
+            const ball = new Ball();
+            ball.init();
+            balls.push(ball);
+        }
+
+        PAUSE = false;
+    }
+
+    function pause() {
+        PAUSE = true;
+    }
+
+    function continue_() {
+        PAUSE = false;
+    }
+
+    function getTimeStr(timestamp) {
+        let date = new Date(timestamp);
+        let Y = date.getFullYear() + '-';
+        let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+        let D = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) + ' ';
+        let h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
+        let m = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
+        let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+        return Y + M + D + h + m + s;
+    }
+
+    setInterval(repaint, 500);
+    setInterval(calculate, 10);
+
+    function repaint() {
+        ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
+        for (let ball of balls) {
+            ball.draw();
+        }
+    }
+
+    function calculate() {
+        let now = Date.now();
+        if (PAUSE) {
+            return;
+        }
+
+        if (now < serverStartTime) {
+            return;
+        }
+
+        let times = Math.floor((now - serverStartTime) / frameMs);
+
+        if (times <= 0) {
+            return;
+        }
+
+        if (times > 10) {
+            times = Math.floor(times / 10);
+        }
+
+        for (let i = 0; i < times; i++) {
+            serverStartTime += frameMs;
+
+            for (let ball of balls) {
+                ball.update();
+                if (ball.y - ball.radius * 2 > CANVAS_HEIGHT) {
+                    ball.init();
+                }
+            }
+        }
+    }
+</script>
+
+</html>
