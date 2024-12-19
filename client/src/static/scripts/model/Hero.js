@@ -43,25 +43,6 @@ function Hero() {
     };
 }
 
-function click(x, y) {
-    let data = {
-        id: hero.id,
-        x: x,
-        y: y
-    }
-
-    sendWsMessage("move", data);
-}
-
-function heroMove(id, x, y) {
-    heroArray.forEach(hero => {
-        if (hero.id == id) {
-            hero.x = x;
-            hero.y = y;
-        }
-    });
-}
-
 function paintHero() {
     heroArray.forEach(hero => hero.draw());
 }

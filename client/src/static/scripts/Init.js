@@ -8,12 +8,7 @@ function init() {
     HERO_HEIGHT = Math.floor(CANVAS_HEIGHT / 15);
     BALL_HEIGHT = CANVAS_HEIGHT - HERO_HEIGHT;
 
-    canvas.addEventListener("click", function __handler__(evt) {
-        let rect = canvas.getBoundingClientRect();
-        let x = evt.clientX - rect.left;
-        let y = evt.clientY - rect.top;
-        click(x, y);
-    });
+    addListener();
 
     initRoutes();
 
