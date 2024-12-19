@@ -2,7 +2,7 @@ function Hero() {
     this.init = function () {
         this.width = HERO_HEIGHT - 10;
         this.x = CANVAS_WIDTH / 2;
-        this.y = BALL_HEIGHT + this.width + 7;
+        this.y = CANVAS_HEIGHT * 5 / 6;
 
         this.gun = new Gun();
         this.gun.init(2);
@@ -14,7 +14,7 @@ function Hero() {
         ctx.fillStyle = "red";
 
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.width, Math.PI, 2 * Math.PI);
+        ctx.arc(this.x, this.y, this.width, 0, 2 * Math.PI);
         ctx.fill();
 
         this.gun.draw();
@@ -39,9 +39,12 @@ function heroInit() {
     hero.init();
 }
 
+function heroMove(x, y) {
+    hero.x = x;
+    hero.y = y;
+}
+
 function paintHero() {
-    ctx.fillStyle = "#388372";
-    ctx.fillRect(0, CANVAS_HEIGHT - HERO_HEIGHT, CANVAS_WIDTH, 5);
     hero.draw();
 }
 

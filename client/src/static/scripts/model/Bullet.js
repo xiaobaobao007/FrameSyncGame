@@ -7,9 +7,9 @@ function Bullet() {
         this.x = x;
         this.y = y;
 
-        this.radius = random.random(20) + 1;
+        this.radius = random.random(5) + 6;
 
-        let speedRate = (40 - this.radius) * 0.003
+        let speedRate = (40 - this.radius) * 0.005
 
         this.xSpeed = xSpeed * speedRate;
         this.ySpeed = ySpeed * speedRate;

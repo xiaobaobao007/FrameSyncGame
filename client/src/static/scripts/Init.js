@@ -5,8 +5,15 @@ function init() {
     CANVAS_WIDTH = Math.floor(canvas.width);
     CANVAS_HEIGHT = Math.floor(canvas.height);
 
-    HERO_HEIGHT = Math.floor(CANVAS_HEIGHT / 10);
+    HERO_HEIGHT = Math.floor(CANVAS_HEIGHT / 15);
     BALL_HEIGHT = CANVAS_HEIGHT - HERO_HEIGHT;
+
+    canvas.addEventListener("click", function __handler__(evt) {
+        let rect = canvas.getBoundingClientRect();
+        let x = evt.clientX - rect.left;
+        let y = evt.clientY - rect.top;
+        heroMove(x, y);
+    });
 }
 
 function start() {

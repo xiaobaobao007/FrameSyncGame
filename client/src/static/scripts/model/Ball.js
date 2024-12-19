@@ -5,7 +5,7 @@ function Ball() {
         this.x = this.radius + random.random(CANVAS_WIDTH - this.radius * 2)
         this.y = -this.radius * 2;
         this.color = `rgb(${random.random(256)},${random.random(256)},${random.random(256)})`;
-        this.speed = random.random(10) * 0.1 + 0.1;
+        this.speed = random.random(10) * 0.2 + 0.1;
         this.hp = 2;
     };
 
@@ -25,10 +25,11 @@ function Ball() {
 
     this.update = function () {
         if (this.y + this.radius >= BALL_HEIGHT) {
-            this.y = BALL_HEIGHT - this.radius;
-            return;
+            this.init();
+            hero.score -= 2;
+        } else {
+            this.y += this.speed;
         }
-        this.y += this.speed;
     };
 }
 
