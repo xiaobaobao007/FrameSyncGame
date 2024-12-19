@@ -3,7 +3,8 @@ function initBullet() {
 }
 
 function Bullet() {
-    this.init = function (x, y, xSpeed, ySpeed) {
+    this.init = function (hero, x, y, xSpeed, ySpeed) {
+        this.hero = hero;
         this.x = x;
         this.y = y;
 
@@ -42,7 +43,7 @@ function Bullet() {
                 ball.hp -= 1;
                 if (ball.hp <= 0) {
                     ball.init();
-                    hero.score += 1;
+                    this.hero.score += 1;
                 }
             }
         }

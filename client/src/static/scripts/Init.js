@@ -12,25 +12,43 @@ function init() {
         let rect = canvas.getBoundingClientRect();
         let x = evt.clientX - rect.left;
         let y = evt.clientY - rect.top;
-        heroMove(x, y);
+        click(x, y);
     });
+
+    initRoutes();
+
+    initWs();
 }
 
-function start() {
-    random.init(parseInt(document.getElementById("initRandomSeed").value));
+function clickStart() {
+    sendWsMessage("join", {roomId: document.getElementById("roomId").value});
+}
 
-    let time = document.getElementById("startTime").value;
-    if (!time || time.length < 2) {
-        serverStartTime = Date.now();
-        serverStartTime = serverStartTime - serverStartTime % 1000;
-        document.getElementById("startTime").value = getTimeStr(serverStartTime);
-    } else {
-        serverStartTime = Date.parse(time);
-    }
+function gameStart(data) {
+    document.getElementById("uid").value = data.myId;
+    document.getElementById("initRandomSeed").value = data.seed;
+    document.getElementById("startTime").value = getTimeStr(data.startTime);
+
+    random.init(data.seed);
+    serverStartTime = data.startTime;
+
+    heroArray = [];
+
+    data.allId.forEach((player) => {
+        const id = player.id;
+        const isMe = (id == data.myId);
+        const newHero = new Hero();
+        newHero.initHero(id, isMe, player.x, player.y);
+
+        if (isMe) {
+            hero = newHero;
+        }
+
+        heroArray.push(newHero);
+    });
 
     initBullet()
     ballInit();
-    heroInit();
 
     resetFps();
 

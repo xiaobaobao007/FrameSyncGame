@@ -15,7 +15,8 @@ function Gun() {
     this.lastShootTime = 0;
     this.shootTime = 500;
 
-    this.init = function (rate) {
+    this.init = function (hero, rate) {
+        this.hero = hero;
         this.gunLength = HERO_HEIGHT * rate;
     }
 
@@ -52,7 +53,7 @@ function Gun() {
         if (this.lastShootTime <= now) {
             this.lastShootTime = now + this.shootTime;
             let bullet = createBullet();
-            bullet.init(this.x, this.y, this.speedX, this.speedY);
+            bullet.init(this.hero, this.x, this.y, this.speedX, this.speedY);
             this.bulletArray.push(bullet);
         }
 

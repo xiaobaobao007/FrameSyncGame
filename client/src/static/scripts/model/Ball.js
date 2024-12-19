@@ -26,7 +26,9 @@ function Ball() {
     this.update = function () {
         if (this.y + this.radius >= BALL_HEIGHT) {
             this.init();
-            hero.score -= 2;
+            heroArray.forEach(hero => {
+                hero.score -= 2;
+            })
         } else {
             this.y += this.speed;
         }
