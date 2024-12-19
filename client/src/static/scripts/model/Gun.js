@@ -10,12 +10,14 @@ function Gun() {
     this.speedX = 0;
     this.speedY = 0;
 
-    this.gunLength = HERO_HEIGHT * 2;
-
     this.bulletArray = [];
 
     this.lastShootTime = 0;
     this.shootTime = 500;
+
+    this.init = function (rate) {
+        this.gunLength = HERO_HEIGHT * rate;
+    }
 
     this.reset = function (x_, y_, tx_, ty_) {
         this.x = x_;

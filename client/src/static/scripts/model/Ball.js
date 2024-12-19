@@ -5,7 +5,7 @@ function Ball() {
         this.x = this.radius + random.random(CANVAS_WIDTH - this.radius * 2)
         this.y = -this.radius * 2;
         this.color = `rgb(${random.random(256)},${random.random(256)},${random.random(256)})`;
-        this.speed = random.random(15) * 0.1 + 0.1;
+        this.speed = random.random(10) * 0.1 + 0.1;
         this.hp = 2;
     };
 
@@ -15,8 +15,11 @@ function Ball() {
         ctx.fillStyle = this.color;
         ctx.fill();
 
-        ctx.fillStyle = "white";
         ctx.lineWidth = 3;
+        ctx.font = '20px 宋体';
+        ctx.fillStyle = "white";
+        ctx.textBaseline = 'middle';
+        ctx.textAlign = 'center';
         ctx.fillText(this.hp, this.x, this.y);
     };
 

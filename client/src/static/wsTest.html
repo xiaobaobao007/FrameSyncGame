@@ -52,7 +52,7 @@
     // 为发送按钮添加点击事件监听器
     sendButton.addEventListener('click', function () {
         const message = messageInput.value;
-        if (message.trim()!== '') {
+        if (message.trim() !== '') {
             // 向服务器发送消息
             ws.send(message);
             const sentDiv = document.createElement('div');

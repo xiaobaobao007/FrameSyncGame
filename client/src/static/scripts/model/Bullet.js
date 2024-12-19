@@ -7,13 +7,12 @@ function Bullet() {
         this.x = x;
         this.y = y;
 
-        this.radius = random.random(30) + 3;
+        this.radius = random.random(20) + 1;
 
         let speedRate = (40 - this.radius) * 0.003
 
         this.xSpeed = xSpeed * speedRate;
         this.ySpeed = ySpeed * speedRate;
-
 
         this.color = `rgb(${random.random(256)},${random.random(256)},${random.random(256)})`;
     };
@@ -43,6 +42,7 @@ function Bullet() {
                 ball.hp -= 1;
                 if (ball.hp <= 0) {
                     ball.init();
+                    hero.score += 1;
                 }
             }
         }
