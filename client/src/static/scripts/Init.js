@@ -11,12 +11,45 @@ function init() {
     addListener();
 
     initRoutes();
-
-    initWs();
 }
 
-function clickStart() {
-    sendWsMessage("join", {roomId: document.getElementById("roomId").value});
+function clickStartOutline() {
+    let uid = document.getElementById("uid").value;
+    let initRandomSeed = document.getElementById("initRandomSeed").value;
+    let startTime = document.getElementById("startTime").value;
+    if (!uid || uid.length === 0) {
+        uid = 1;
+    } else {
+        uid = parseInt(uid);
+    }
+    if (!initRandomSeed || initRandomSeed.length === 0) {
+        initRandomSeed = 1000;
+    } else {
+        initRandomSeed = parseInt(initRandomSeed);
+    }
+
+    if (!startTime || startTime.length === 0) {
+        startTime = Date.now();
+    } else {
+        startTime = Date.parse(startTime);
+    }
+
+    let data = {
+        myId: uid,
+        seed: initRandomSeed,
+        startTime: startTime,
+        allId: [
+            {id: uid, x: 50, y: 90},
+        ]
+    };
+
+    gameStart(data);
+
+    ws = undefined;
+}
+
+function clickStartOnline() {
+    initWs();
 }
 
 function gameStart(data) {
@@ -25,15 +58,17 @@ function gameStart(data) {
     document.getElementById("startTime").value = getTimeStr(data.startTime);
 
     random.init(data.seed);
-    serverStartTime = data.startTime;
+    clientStartTime = clientRunTime = data.startTime;
 
     heroArray = [];
 
     data.allId.forEach((player) => {
         const id = player.id;
         const isMe = (id == data.myId);
+
         const newHero = new Hero();
         newHero.initHero(id, isMe, player.x, player.y);
+        newHero.setGun(new Gun());
 
         if (isMe) {
             hero = newHero;
@@ -42,7 +77,7 @@ function gameStart(data) {
         heroArray.push(newHero);
     });
 
-    initBullet()
+    initBullet();
     ballInit();
 
     resetFps();
@@ -86,41 +121,4 @@ function timeThread() {
 
     //逻辑层
     calculate(now);
-}
-
-function repaint(now) {
-    if (now < lastPaintTime) {
-        return;
-    }
-
-    lastPaintTime = now + paintFrameMs;
-
-    ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-
-    paintBall();
-
-    paintHero();
-}
-
-function calculate(now) {
-    if (now < serverStartTime) {
-        return;
-    }
-
-    let times = Math.floor((now - serverStartTime) / calculateFrameMs);
-
-    if (times <= 0) {
-        return;
-    }
-
-    if (times > 10) {
-        times = Math.floor(times / 10);
-    }
-
-    for (let i = 0; i < times; i++) {
-        serverStartTime += calculateFrameMs;
-        updateBall();
-        updateHero(serverStartTime);
-    }
-
 }

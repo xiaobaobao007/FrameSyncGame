@@ -4,6 +4,8 @@ function initWs() {
     // 连接建立时触发
     ws.onopen = function () {
         console.log('WebSocket连接已建立');
+
+        sendWsMessage("join", {roomId: document.getElementById("roomId").value});
     };
 
     // 接收服务器消息时触发

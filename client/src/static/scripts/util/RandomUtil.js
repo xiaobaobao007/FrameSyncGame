@@ -86,4 +86,20 @@ function Random() {
         return this._random_array;
     }
 
+    this.package = function () {
+        return {
+            _init_random: this._init_random,
+            _random_array: this._random_array,
+            index: this.index,
+            zeroNum: this.zeroNum,
+        };
+    };
+
+    this.unPackage = function (data) {
+        this._init_random = data._init_random;
+        this._random_array = data._random_array;
+        this.index = data.index;
+        this.zeroNum = data.zeroNum;
+    };
+
 }

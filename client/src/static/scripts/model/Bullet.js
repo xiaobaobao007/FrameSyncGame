@@ -36,7 +36,7 @@ function Bullet() {
 
     this.crash = function () {
         let crash = false;
-        for (const ball of balls) {
+        for (const ball of ballArray) {
             let d = Math.sqrt(Math.pow(this.x - ball.x, 2) + Math.pow(this.y - ball.y, 2));
             if (d < this.radius + ball.radius) {
                 crash = true;
@@ -48,6 +48,27 @@ function Bullet() {
             }
         }
         return crash;
+    };
+
+    this.package = function () {
+        return {
+            x: this.x,
+            y: this.y,
+            radius: this.radius,
+            xSpeed: this.xSpeed,
+            ySpeed: this.ySpeed,
+            color: this.color,
+        };
+    };
+
+    this.unPackage = function (hero, data) {
+        this.hero = hero;
+        this.x = data.x;
+        this.y = data.y;
+        this.radius = data.radius;
+        this.xSpeed = data.xSpeed;
+        this.ySpeed = data.ySpeed;
+        this.color = data.color;
     };
 
 }

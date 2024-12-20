@@ -14,46 +14,59 @@
     <input id="roomId" value="abc"/>
 
     </br> <a>玩家Id:</a>
-    <input id="uid" disabled value=""/>
+    <input id="uid" value=""/>
     </br>
 
     <a>初始种子:</a>
-    <input id="initRandomSeed" disabled value=""/>
+    <input id="initRandomSeed" value=""/>
     </br>
 
     <a>启动时间:</a>
-    <input id="startTime" disabled/>
+    <input id="startTime"/>
     </br>
 
     <a>FPS:</a>
     <input id="fps" value="60"/>
     </br>
 
-    <button onclick="clickStart()">开始</button>
-    <button onclick="pause()">暂停</button>
-    <button onclick="continue_()">继续</button>
+    <a>下行延迟:</a>
+    <input id="receiveDelay" value="0"/>
+    </br>
 </div>
 
-<script src="static/scripts/util/randomUtil.js"></script>
-<script src="static/scripts/util/wsConnectUtil.js"></script>
+<button onclick="clickStartOutline()">单机开始</button>
+<button onclick="clickStartOnline()">联机开始</button>
+<button onclick="pause()">暂停</button>
+<button onclick="continue_()">继续</button>
+
+<script src="static/scripts/Paint.js"></script>
+<script src="static/scripts/util/Frame.js"></script>
+<script src="static/scripts/util/RandomUtil.js"></script>
+<script src="static/scripts/util/WsConnectUtil.js"></script>
 <script src="static/scripts/model/Ball.js"></script>
 <script src="static/scripts/model/Bullet.js"></script>
 <script src="static/scripts/model/Gun.js"></script>
 <script src="static/scripts/model/Hero.js"></script>
 <script src="static/scripts/util/ClientRoutes.js"></script>
-<script src="static/scripts/operation.js"></script>
+<script src="static/scripts/util/OperationUtil.js"></script>
 <script src="static/scripts/Init.js"></script>
 <link rel="stylesheet" href="static/css/main.css"/>
 </body>
 
 <script>
+    BALL_INIT_NUM = 30;
+
     paintFrameMs = 1000 / 60;
     lastPaintTime = 0;
 
-    serverStartTime = 0;
+    clientStartTime = 0;
+    clientRunTime = 0;
     calculateFrameMs = 20;
 
     PAUSE = true;
+
+    frameArray = [];
+    MOVE_TO_FRAME_ID = -1;
 
     init();
 

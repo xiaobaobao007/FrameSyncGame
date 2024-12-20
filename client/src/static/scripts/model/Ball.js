@@ -33,32 +33,52 @@ function Ball() {
             this.y += this.speed;
         }
     };
+
+    this.package = function () {
+        return {
+            radius: this.radius,
+            x: this.x,
+            y: this.y,
+            color: this.color,
+            speed: this.speed,
+            hp: this.hp,
+        };
+    };
+
+    this.unPackage = function (data) {
+        this.radius = data.radius;
+        this.x = data.x;
+        this.y = data.y;
+        this.color = data.color;
+        this.speed = data.speed;
+        this.hp = data.hp;
+    };
 }
 
 function ballInit() {
-    balls = [];
-    for (let i = 0; i < 10; i++) {
+    ballArray = [];
+    for (let i = 0; i < BALL_INIT_NUM; i++) {
         const ball = new Ball();
         ball.init();
-        balls.push(ball);
+        ballArray.push(ball);
     }
 }
 
 function paintBall() {
-    for (let ball of balls) {
+    for (let ball of ballArray) {
         ball.draw();
     }
 }
 
 function updateBall() {
-    for (let ball of balls) {
+    for (let ball of ballArray) {
         ball.update();
     }
 }
 
 function findCloseOne() {
     let b = null;
-    for (let ball of balls) {
+    for (let ball of ballArray) {
         if (b == null || b.y < ball.y) {
             b = ball;
         }

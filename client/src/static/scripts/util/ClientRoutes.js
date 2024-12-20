@@ -3,7 +3,7 @@ function ClientRoutes() {
         gameStart(data)
     }
     this.move = function (data) {
-        heroMove(data.id, data.x, data.y);
+        addHeroMove(data.id, data.x, data.y, data.frameId);
     }
 }
 

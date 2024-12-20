@@ -23,7 +23,7 @@ export class RoomManager {
         if (!room) {
             return;
         }
-        room.broadcast("move", data)
+        room.move(data);
     }
 
     public static level(player: Player) {

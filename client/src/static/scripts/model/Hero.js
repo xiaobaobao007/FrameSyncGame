@@ -5,11 +5,12 @@ function Hero() {
         this.width = HERO_HEIGHT - 10;
         this.x = CANVAS_WIDTH * x / 100;
         this.y = CANVAS_HEIGHT * y / 100;
-
-        this.gun = new Gun();
-        this.gun.init(this, 2);
-        this.gun.reset(this.x, this.y, 200, 200);
         this.score = 0;
+    };
+
+    this.setGun = function (gun) {
+        this.gun = gun;
+        this.gun.init(this, 2);
     };
 
     this.draw = function () {
@@ -20,14 +21,6 @@ function Hero() {
         ctx.fill();
 
         this.gun.draw();
-
-        if (this.isMe) {
-            ctx.font = '30px 宋体';
-            ctx.fillStyle = "#0d3dff";
-            ctx.textBaseline = 'top';
-            ctx.textAlign = 'end';
-            ctx.fillText("分数：" + this.score, CANVAS_WIDTH, 0);
-        }
 
         ctx.font = '20px 宋体';
         ctx.fillStyle = "#ffffff";
@@ -40,6 +33,27 @@ function Hero() {
         let closeBall = findCloseOne();
         this.gun.reset(this.x, this.y, closeBall.x, closeBall.y);
         this.gun.update(now);
+    };
+
+    this.package = function () {
+        return {
+            id: this.id,
+            isMe: this.isMe,
+            x: this.x,
+            y: this.y,
+            score: this.score,
+            gun: this.gun.package(),
+        };
+    };
+
+    this.unPackage = function (data) {
+        this.id = data.id;
+        this.isMe = data.isMe;
+        this.x = data.x;
+        this.y = data.y;
+        this.score = data.score;
+
+        this.gun.unPackage(data.gun);
     };
 }
 

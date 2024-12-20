@@ -13,11 +13,13 @@ function Gun() {
     this.bulletArray = [];
 
     this.lastShootTime = 0;
-    this.shootTime = 500;
+    this.shootTime = 200;
 
     this.init = function (hero, rate) {
         this.hero = hero;
         this.gunLength = HERO_HEIGHT * rate;
+
+        this.reset(hero.x, hero.y, 200, 200);
     }
 
     this.reset = function (x_, y_, tx_, ty_) {
@@ -77,4 +79,40 @@ function Gun() {
             }
         }
     };
+
+    this.package = function () {
+        return {
+            x: this.x,
+            y: this.y,
+            targetX: this.targetX,
+            targetY: this.targetY,
+            speedX: this.speedX,
+            speedY: this.speedY,
+            bulletArray: this.bulletArray.map(bullet => bullet.package()),
+            lastShootTime: this.lastShootTime,
+            shootTime: this.shootTime,
+        };
+    };
+
+    this.unPackage = function (data) {
+        this.x = data.x;
+        this.y = data.y;
+        this.targetX = data.targetX;
+        this.targetY = data.targetY;
+        this.speedX = data.speedX;
+        this.speedY = data.speedY;
+        this.lastShootTime = data.lastShootTime;
+        this.shootTime = data.shootTime;
+
+        this.bulletArray.forEach(bullet => destroyBullet(bullet))
+
+        this.bulletArray = [];
+
+        for (const bulletData of data.bulletArray) {
+            let bullet = createBullet();
+            bullet.unPackage(this.hero, bulletData);
+            this.bulletArray.push(bullet);
+        }
+    };
+
 }
